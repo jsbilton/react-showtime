@@ -23,11 +23,12 @@ const Moviedb = React.createClass ({
       xhr({
         method: 'GET',
         json: true,
-        url: 'https://www.omdbapi.com/?r=json&s=Bat'
+        url: `https://www.omdbapi.com/?r=json&s=${this.state.s}`
       }, (err, res, body) => {
+        console.log(JSON.stringify(body, null, 2))
         if (err) { console.log(err.message) }
         this.setState({
-          movies: body
+          movies: body.Search
         })
       })
     },
@@ -41,11 +42,16 @@ const Moviedb = React.createClass ({
           } ,[
             h('input.mb2', { onChange: this.handleChange })
           ]),
-          h('button.pa2', 'Browse All Movies'),
+          // h('button.pa2', 'Browse All Movies'),
           h(Link, {
               to: '/',
               className: 'link db mt2'
-          }, 'Home')
+          }, 'Home'),
+          h('div', this.state.movies.map(movie =>
+            h('img', {
+              src: movie.Poster
+            })
+          ))
         ])
       )
     }
